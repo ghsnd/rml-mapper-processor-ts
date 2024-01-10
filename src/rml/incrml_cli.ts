@@ -7,7 +7,8 @@ import {IncRMLConfig, rml2incrml} from "./incrml";
 const args = yargs(process.argv.slice(2))
     .options({
         'config':      {type: 'string', demandOption: true, alias: 'c'},
-        'rml-mapping': {type: 'string', demandOption: true, alias: 'm'}
+        'rml-mapping': {type: 'string', demandOption: true, alias: 'm'},
+        'output':      {type: 'string', demandOption: true, alias: 'o'}
     }).parse();
 
 
@@ -21,7 +22,7 @@ const incrmlStream = new SimpleStream<string>();
 
 // Write output to console
 incrmlStream.data(data => {
-    console.log(data);
+    fs.writeFileSync(args['o'], data, 'utf-8')
 });
 
 await rml2incrml(rmlStream, config, incrmlStream);
